@@ -8,7 +8,7 @@
 
 
 
-std::map<int,double> Numeric_flux(std::vector<double>& sol,int j,int c, int flux);
+//std::map<int,double> Numeric_flux(std::vector<double>& sol,int j,int c, int flux);
 
 
 std::vector<double> LH(std::vector<double> sol, int flux);

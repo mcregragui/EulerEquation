@@ -3,11 +3,59 @@
 
 
 
+
+
+double u0(int variable,double x)
+{
+    if(x<L/2.0)
+    {
+        if(variable==RHO)
+        {
+            return 1.0;
+        }
+        if(variable==U)
+        {
+            return 0;
+        }
+        if(variable==E)
+        {
+            return 1.0/(gama-1);
+        }
+        if(variable==P)
+        {
+            return 1.0;
+        }
+    }
+    else
+    {
+        if(variable==RHO)
+        {
+            return 0.125;
+        }
+        if(variable==U)
+        {
+            return 0;
+        }
+        if(variable==E)
+        {
+            return 0.1/(gama-1);
+        }
+        if(variable==P)
+        {
+            return 0.1;
+        }
+    }
+}
+
+
+
+
+
 std::map<int,std::vector<double>> transformp(std::vector<double> solf,double x)
 {
 
     std::vector<double> sol(std::floor(L/dx),0);
-     std::map<int,std::vector<double>> V;
+    std::map<int,std::vector<double>> V;
     for(int i=0;i<std::floor(L/dx);i++)
     {
         
@@ -39,7 +87,7 @@ std::map<int,std::vector<double>> transformp(std::vector<double> solf,double x)
     }
     for(int i=0;i<std::floor(L/dx);i++)
     {
-        V[P].push_back((gamma-1.0)*(V[E].at(i)-0.5*V[RHO].at(i)*V[U].at(i)*V[U].at(i)));
+        V[P].push_back((gama-1.0)*(V[E].at(i)-0.5*V[RHO].at(i)*V[U].at(i)*V[U].at(i)));
     }
     return V;
 }
@@ -63,6 +111,51 @@ std::map<int,std::vector<double>> FU(std::vector<double> sol,double x)
         F[RHO].at(i)=V[RHO].at(i)*V[U].at(i);
         F[U].at(i)=V[RHO].at(i)*V[U].at(i)*V[U].at(i)+V[P].at(i);
         F[E].at(i)=V[U].at(i)*(V[E].at(i)+V[P].at(i));
+    }
+
+    return V;
+}
+
+
+std::map<int,std::vector<double>> transform(std::vector<double> solf)
+{
+    std::vector<double> sol(std::floor(L/dx),0);
+    std::map<int,std::vector<double>> V;
+
+    for(int i=0;i<std::floor(L/dx);i++)
+    {
+        V[RHO].push_back(solf[3*i]);
+
+        V[U].push_back(solf[3*i+1]);
+
+        V[E].push_back(solf[3*i+2]);
+    }
+
+    for(int i=0;i<std::floor(L/dx);i++)
+    {
+
+       V[P].push_back((gama-1)*(V[E].at(i)-0.5*V[U].at(i)*V[U].at(i)/V[RHO].at(i)));
+
+    }
+
+
+    return V;
+
+
+}
+
+std::map<int,std::vector<double>> FFU(std::vector<double> sol)
+{
+    std::map<int,std::vector<double>> F;
+    std::map<int,std::vector<double>> V;
+
+    V=transform(sol);
+
+    for(int i=0;i<std::floor(L/dx);i++)
+    {
+        F[RHO].at(i)=V[U].at(i);
+        F[U].at(i)=V[RHO].at(i)*V[U].at(i)*V[U].at(i)/V[RHO].at(i)+V[P].at(i);
+        F[E].at(i)=V[U].at(i)*(V[E].at(i)+V[P].at(i))/V[RHO].at(i);
     }
 
     return V;

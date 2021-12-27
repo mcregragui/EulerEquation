@@ -14,8 +14,9 @@ std::vector<double> Update(std::vector<double> sol, int flux)
     case 1:
 
         U0=sol;
+       
         sol=U0+dt*LH(U0,flux);
-        
+       
         return sol;
 
     case 2:

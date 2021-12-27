@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<map>
+#include<cmath>
 
 #define RHO 0
 #define U  1
@@ -9,6 +10,5 @@
 
 //extern std::vector<double> RHO, U, P, E;
 extern std::map<int,std::vector<double>> var;
-extern double gamma;
-extern double dx, dt, L;
+extern double dx, dt, L,gama;
 extern int ord, r;

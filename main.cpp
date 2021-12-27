@@ -7,9 +7,8 @@
 #include "include/InitCondition.h"
 #include<fstream>
 
-double dx(0.1), dt(0.01), L(10);
-int ord(1), r(2);
-double gamma(1.4);
+double dx(0.1), dt(0.001), L(10),gama(1.4);
+int ord(1), r(3);
 std::map<int,std::vector<double>> var;
 
 int main()
@@ -17,28 +16,30 @@ int main()
 
     std::vector<double> sol(3*ord*std::floor(L/dx),0);
 
+    
+
 
     sol=Quadrature0();
 
-
+    
 
 
     //Resolution 
 
-    int n=50;
+    int n=1000;
 
     for(int i=0;i<n;i++)
     {
-        sol=Update(sol,3);
+        sol=Update(sol,1);
     }
-
+    
     std::ofstream myfile;
     myfile.open ("example.txt");
     std::vector<double> sol0(ord*std::floor(L/dx),0);
     sol0=Quadrature0();
     for(int i=0;i<std::floor(L/dx);i++)
     {
-        myfile <<i*dx<<" "<<transformp(sol,i*dx)[RHO]<<" "<<transformp(sol,i*dx)[U]<<" "<<transformp(sol,i*dx)[E]<<" "<<transformp(sol,i*dx)[P] <<std::endl;
+        myfile <<i*dx<<" "<<transformp(sol,i*dx)[RHO].at(i)<<" "<<transformp(sol,i*dx)[U].at(i)<<" "<<transformp(sol,i*dx)[E].at(i)<<" "<<transformp(sol,i*dx)[P].at(i) <<std::endl;
     }
    
     myfile.close();

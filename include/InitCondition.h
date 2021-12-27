@@ -13,3 +13,7 @@ double u0(int variable,double x);
 std::map<int,std::vector<double>> transformp(std::vector<double> sol,double x);
 
 std::map<int,std::vector<double>> FU(std::vector<double> sol,double x);
+
+std::map<int,std::vector<double>> transform(std::vector<double> sol);
+
+std::map<int,std::vector<double>> FFU(std::vector<double> sol);
